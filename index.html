@@ -1,438 +1,626 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
-
-<title>AI Science Quiz</title>
+<title>NeuroQuiz AI</title>
 
 <style>
-
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --green: #00ff88;
+    --green2: #00c96b;
+    --bg: #050706;
+    --card: rgba(15, 20, 17, .78);
+    --border: rgba(255,255,255,.09);
+    --text: #f5f7f6;
+    --muted: #8d9691;
+    --red: #ff4d67;
+    --yellow: #ffd166;
 }
 
 body {
     min-height: 100vh;
-
-    font-family: Arial, sans-serif;
-
+    font-family: Inter, Arial, sans-serif;
+    color: var(--text);
     background:
-        radial-gradient(
-            circle at top,
-            #123d29,
-            #050505 60%
-        );
-
-    color: white;
-
+        radial-gradient(circle at 15% 15%, rgba(0,255,136,.12), transparent 30%),
+        radial-gradient(circle at 85% 80%, rgba(0,200,255,.08), transparent 30%),
+        #050706;
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
-    padding: 20px;
+    overflow-x: hidden;
 }
 
-.container {
-    width: 100%;
-    max-width: 850px;
+/* animated background */
 
-    background: #101010;
-
-    border: 1px solid #292929;
-
-    border-radius: 22px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 25px 80px rgba(0,0,0,.55);
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 45px 45px;
+    mask-image: linear-gradient(to bottom, black, transparent);
 }
 
-header {
-    padding: 24px 28px;
+.orb {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--green);
+    filter: blur(140px);
+    opacity: .07;
+    animation: float 8s infinite alternate ease-in-out;
+}
 
+.orb.one {
+    top: -100px;
+    left: -100px;
+}
+
+.orb.two {
+    bottom: -100px;
+    right: -100px;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    from { transform: translate(0,0); }
+    to { transform: translate(50px,-30px); }
+}
+
+/* app */
+
+.app {
+    width: min(900px, 94%);
+    margin: 30px auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* top bar */
+
+.topbar {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
+    margin-bottom: 18px;
+}
 
-    border-bottom: 1px solid #292929;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
     font-size: 21px;
-
-    font-weight: bold;
+    background: linear-gradient(135deg, #00ff88, #00b968);
+    color: #00150b;
+    box-shadow: 0 0 25px rgba(0,255,136,.22);
 }
 
-.logo span {
-    color: #00e676;
+.brand h1 {
+    font-size: 19px;
 }
 
-.score {
-    background: #1b1b1b;
-
-    color: #00e676;
-
-    padding: 9px 15px;
-
-    border-radius: 10px;
-
-    font-weight: bold;
+.brand p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
 }
 
-.content {
-    padding: 35px;
+.scorebox {
+    padding: 10px 15px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.045);
+    backdrop-filter: blur(15px);
+    border-radius: 13px;
 }
 
-.status {
-    color: #888;
-
-    margin-bottom: 20px;
-
-    font-size: 14px;
+.scorebox span {
+    color: var(--muted);
+    font-size: 11px;
 }
+
+.scorebox strong {
+    color: var(--green);
+    margin-left: 5px;
+}
+
+/* card */
+
+.card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(25px);
+    border-radius: 25px;
+    padding: 32px;
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.45),
+        inset 0 1px rgba(255,255,255,.04);
+}
+
+/* status */
+
+.statusrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.ai-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+}
+
+.counter {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* progress */
 
 .progress {
-    height: 7px;
-
-    background: #242424;
-
-    border-radius: 20px;
-
+    height: 5px;
+    width: 100%;
+    background: rgba(255,255,255,.07);
+    border-radius: 10px;
     overflow: hidden;
+    margin-bottom: 38px;
+}
 
+.progressbar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--green), #7affbd);
+    box-shadow: 0 0 15px rgba(0,255,136,.45);
+    transition: width .5s ease;
+}
+
+/* question */
+
+.question {
+    font-size: clamp(25px, 5vw, 39px);
+    line-height: 1.18;
+    letter-spacing: -.8px;
     margin-bottom: 30px;
 }
 
-.bar {
-    height: 100%;
-
-    width: 0%;
-
-    background: #00e676;
-
-    transition: .3s;
+.question::first-letter {
+    color: var(--green);
 }
 
-.question {
-    font-size:
-        clamp(24px,5vw,36px);
-
-    line-height: 1.3;
-
-    margin-bottom: 28px;
-}
+/* answers */
 
 .answers {
     display: grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap: 14px;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
 }
 
 .answer {
-    padding: 18px;
-
-    background: #171717;
-
-    color: #ddd;
-
-    border: 1px solid #2d2d2d;
-
-    border-radius: 12px;
-
-    cursor: pointer;
-
+    position: relative;
+    min-height: 68px;
+    padding: 16px 18px;
+    border-radius: 15px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.035);
+    color: #dce2df;
     text-align: left;
-
+    cursor: pointer;
     font-size: 15px;
-
-    transition: .2s;
+    transition: .2s ease;
 }
 
 .answer:hover {
-    border-color: #00e676;
-
+    border-color: rgba(0,255,136,.45);
+    background: rgba(0,255,136,.06);
     transform: translateY(-2px);
 }
 
+.answer .letter {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    margin-right: 10px;
+    background: rgba(255,255,255,.07);
+    color: #9da59f;
+    font-weight: bold;
+}
+
 .answer.correct {
-    border-color: #00e676;
+    border-color: var(--green);
+    background: rgba(0,255,136,.10);
+    color: var(--green);
+    box-shadow: 0 0 25px rgba(0,255,136,.08);
+}
 
-    color: #00e676;
-
-    background:
-        rgba(0,230,118,.12);
+.answer.correct .letter {
+    background: var(--green);
+    color: #00150b;
 }
 
 .answer.wrong {
-    border-color: #ff5252;
+    border-color: var(--red);
+    background: rgba(255,77,103,.09);
+    color: #ff8396;
+}
 
-    color: #ff5252;
-
-    background:
-        rgba(255,82,82,.12);
+.answer.wrong .letter {
+    background: var(--red);
+    color: white;
 }
 
 .answer:disabled {
     cursor: default;
 }
 
-button.next {
-    width: 100%;
+/* explanation */
 
-    padding: 15px;
-
-    margin-top: 25px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #00e676;
-
-    color: #000;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
+.explanation {
+    margin-top: 20px;
+    padding: 17px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid var(--border);
+    color: #adb6b1;
+    line-height: 1.55;
     display: none;
 }
 
-button.next:hover {
-    background: #00c968;
+.explanation b {
+    color: var(--green);
+}
+
+/* buttons */
+
+.buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+button {
+    font-family: inherit;
+}
+
+.generate,
+.next {
+    flex: 1;
+    padding: 15px;
+    border: 0;
+    border-radius: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
 }
 
 .generate {
-    width: 100%;
-
-    padding: 15px;
-
-    margin-bottom: 25px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #00e676;
-
-    color: #000;
-
-    font-weight: bold;
-
-    cursor: pointer;
+    background: linear-gradient(135deg, var(--green), var(--green2));
+    color: #00150b;
+    box-shadow: 0 8px 25px rgba(0,255,136,.12);
 }
+
+.generate:hover,
+.next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,255,136,.2);
+}
+
+.next {
+    display: none;
+    background: #eafff4;
+    color: #00150b;
+}
+
+/* loading */
 
 .loading {
-    text-align: center;
-
-    color: #888;
-
-    padding: 40px;
-}
-
-.explanation {
     display: none;
-
-    margin-top: 20px;
-
-    padding: 16px;
-
-    border-radius: 10px;
-
-    background: #191919;
-
-    color: #aaa;
-
-    line-height: 1.5;
+    padding: 50px 20px;
+    text-align: center;
 }
+
+.spinner {
+    width: 42px;
+    height: 42px;
+    border: 3px solid rgba(255,255,255,.1);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    margin: 0 auto 18px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* welcome */
+
+.welcome {
+    text-align: center;
+    padding: 35px 10px 10px;
+}
+
+.welcome-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 18px rgba(0,255,136,.25));
+}
+
+.welcome h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    color: var(--muted);
+    max-width: 520px;
+    margin: auto;
+    line-height: 1.6;
+}
+
+/* result */
 
 .result {
     display: none;
-
     text-align: center;
-
-    padding: 55px 25px;
+    padding: 50px 20px;
 }
 
-.result h1 {
-    font-size: 38px;
-
+.trophy {
+    font-size: 70px;
     margin-bottom: 15px;
 }
 
-.final-score {
-    color: #00e676;
+.result h2 {
+    font-size: 34px;
+}
 
-    font-size: 28px;
-
+.finalscore {
+    color: var(--green);
+    font-size: 35px;
     font-weight: bold;
-
-    margin: 25px;
+    margin: 18px;
 }
 
 .restart {
     padding: 14px 28px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #00e676;
-
-    color: #000;
-
+    border: 0;
+    border-radius: 12px;
+    background: var(--green);
+    color: #00150b;
     font-weight: bold;
-
     cursor: pointer;
 }
 
+/* mobile */
+
 @media(max-width:650px) {
 
-    .content {
-        padding: 25px 18px;
+    .card {
+        padding: 22px;
+        border-radius: 20px;
     }
 
     .answers {
         grid-template-columns: 1fr;
     }
 
+    .question {
+        font-size: 27px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .topbar {
+        margin-bottom: 13px;
+    }
 }
-
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<div class="orb one"></div>
+<div class="orb two"></div>
 
-<header>
+<main class="app">
 
-<div class="logo">
-🤖 <span>AI Science</span> Quiz
-</div>
+    <div class="topbar">
 
-<div class="score" id="score">
-Score: 0
-</div>
+        <div class="brand">
 
-</header>
+            <div class="logo">✦</div>
 
+            <div>
+                <h1>NeuroQuiz AI</h1>
+                <p>Powered by Gemini</p>
+            </div>
 
-<div class="content" id="game">
+        </div>
 
-<button
-class="generate"
-onclick="generateQuestion()"
->
-✨ Generate Random Question
-</button>
+        <div class="scorebox">
+            <span>SCORE</span>
+            <strong id="score">0</strong>
+        </div>
 
-
-<div
-class="status"
-id="status"
->
-Press the button to generate a question.
-</div>
+    </div>
 
 
-<div class="progress">
+    <section class="card">
 
-<div
-class="bar"
-id="bar"
-></div>
+        <div id="welcome" class="welcome">
 
-</div>
+            <div class="welcome-icon">🧠</div>
 
+            <h2>Test Your Science Knowledge</h2>
 
-<h1
-class="question"
-id="question"
->
-Ready?
-</h1>
+            <p>
+                Gemini AI generates a fresh science
+                question every time. Physics, biology,
+                chemistry, astronomy and more.
+            </p>
 
-
-<div
-class="answers"
-id="answers"
-></div>
+        </div>
 
 
-<div
-class="explanation"
-id="explanation"
-></div>
+        <div id="quiz" style="display:none;">
+
+            <div class="statusrow">
+
+                <div class="ai-status">
+                    <span class="dot"></span>
+                    <span id="status">AI Ready</span>
+                </div>
+
+                <div class="counter">
+                    Question <span id="number">0</span>
+                </div>
+
+            </div>
 
 
-<button
-class="next"
-id="next"
-onclick="generateQuestion()"
->
-Next AI Question →
-</button>
-
-</div>
+            <div class="progress">
+                <div
+                    id="progressbar"
+                    class="progressbar">
+                </div>
+            </div>
 
 
-<div
-class="result"
-id="result"
->
+            <h2
+                id="question"
+                class="question">
+            </h2>
 
-<h1>
-🏆 Quiz Complete!
-</h1>
 
-<p>
-You finished the AI Science Quiz.
-</p>
+            <div
+                id="answers"
+                class="answers">
+            </div>
 
-<div
-class="final-score"
-id="finalScore"
-></div>
 
-<button
-class="restart"
-onclick="restartQuiz()"
->
-Play Again
-</button>
+            <div
+                id="explanation"
+                class="explanation">
+            </div>
 
-</div>
 
-</div>
+            <div class="buttons">
+
+                <button
+                    id="generate"
+                    class="generate"
+                    onclick="generateQuestion()">
+                    ✨ Generate AI Question
+                </button>
+
+                <button
+                    id="next"
+                    class="next"
+                    onclick="generateQuestion()">
+                    Next Question →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="loading"
+            class="loading">
+
+            <div class="spinner"></div>
+
+            <p>Gemini is thinking...</p>
+
+        </div>
+
+
+        <div
+            id="result"
+            class="result">
+
+            <div class="trophy">🏆</div>
+
+            <h2>Quiz Complete!</h2>
+
+            <p>
+                Nice work. Here's your final score:
+            </p>
+
+            <div
+                id="finalscore"
+                class="finalscore">
+            </div>
+
+            <button
+                class="restart"
+                onclick="restart()">
+                Play Again
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
 
 
 <script>
 
 let score = 0;
-
 let questionNumber = 0;
-
 let currentQuiz = null;
-
 let answered = false;
 
+
+const welcome =
+document.getElementById("welcome");
+
+const quiz =
+document.getElementById("quiz");
+
+const loading =
+document.getElementById("loading");
+
+const result =
+document.getElementById("result");
 
 const question =
 document.getElementById("question");
@@ -440,40 +628,42 @@ document.getElementById("question");
 const answers =
 document.getElementById("answers");
 
-const status =
-document.getElementById("status");
-
 const explanation =
 document.getElementById("explanation");
 
-const next =
-document.getElementById("next");
+const status =
+document.getElementById("status");
 
-const scoreElement =
+const number =
+document.getElementById("number");
+
+const scoreEl =
 document.getElementById("score");
 
-const bar =
-document.getElementById("bar");
+const progress =
+document.getElementById("progressbar");
+
+const generate =
+document.getElementById("generate");
+
+const next =
+document.getElementById("next");
 
 
 async function generateQuestion() {
 
     answered = false;
 
+    welcome.style.display = "none";
+    quiz.style.display = "none";
+    result.style.display = "none";
+    loading.style.display = "block";
+
     answers.innerHTML = "";
 
-    explanation.style.display =
-        "none";
+    explanation.style.display = "none";
 
-    next.style.display =
-        "none";
-
-    question.textContent =
-        "Generating question...";
-
-    status.textContent =
-        "🤖 Gemini is creating a random science question...";
-
+    next.style.display = "none";
 
     try {
 
@@ -483,79 +673,76 @@ async function generateQuestion() {
         const data =
             await response.json();
 
-
         if (!response.ok) {
-
             throw new Error(
                 data.error ||
-                "Failed to generate question."
+                "Gemini request failed."
             );
-
         }
-
 
         currentQuiz = data;
 
         questionNumber++;
 
-
-        status.textContent =
-            `AI Question ${questionNumber}`;
-
-
-        bar.style.width =
-            `${Math.min(
-                questionNumber * 10,
-                100
-            )}%`;
-
-
         question.textContent =
             data.question;
 
+        number.textContent =
+            questionNumber;
+
+        status.textContent =
+            "Gemini generated a question";
+
+        progress.style.width =
+            Math.min(
+                questionNumber * 10,
+                100
+            ) + "%";
+
 
         data.choices.forEach(
-            (choice,index) => {
+            (choice, index) => {
 
                 const button =
-                    document.createElement(
-                        "button"
-                    );
+                    document.createElement("button");
 
                 button.className =
                     "answer";
 
-                button.textContent =
-                    `${String.fromCharCode(
-                        65 + index
-                    )}. ${choice}`;
+                button.innerHTML = `
+                    <span class="letter">
+                        ${String.fromCharCode(65 + index)}
+                    </span>
+                    ${escapeHTML(choice)}
+                `;
 
-
-                button.onclick =
-                    () =>
+                button.onclick = () =>
                     selectAnswer(
                         index,
                         button
                     );
 
-
-                answers.appendChild(
-                    button
-                );
+                answers.appendChild(button);
 
             }
         );
 
+
+        loading.style.display = "none";
+        quiz.style.display = "block";
+
     } catch(error) {
 
+        loading.style.display = "none";
+        quiz.style.display = "block";
+
         question.textContent =
-            "Something went wrong.";
+            "⚠️ Unable to generate question";
 
         status.textContent =
             error.message;
 
     }
-
 }
 
 
@@ -568,28 +755,20 @@ function selectAnswer(
 
     answered = true;
 
-
     const correct =
         currentQuiz.answer;
 
-
     const buttons =
-        document.querySelectorAll(
-            ".answer"
-        );
+        document.querySelectorAll(".answer");
 
 
     buttons.forEach(
-        (button,index) => {
+        (button, index) => {
 
             button.disabled = true;
 
             if (index === correct) {
-
-                button.classList.add(
-                    "correct"
-                );
-
+                button.classList.add("correct");
             }
 
         }
@@ -600,54 +779,60 @@ function selectAnswer(
 
         score++;
 
-        scoreElement.textContent =
-            `Score: ${score}`;
+        scoreEl.textContent = score;
+
+        selectedButton.classList.add("correct");
+
+        status.textContent =
+            "✓ Correct! Great job.";
 
     } else {
 
-        selectedButton.classList.add(
-            "wrong"
-        );
+        selectedButton.classList.add("wrong");
+
+        status.textContent =
+            "✕ Not quite. Keep learning.";
 
     }
 
 
-    explanation.textContent =
-        "💡 " +
-        currentQuiz.explanation;
+    explanation.innerHTML = `
+        <b>💡 Explanation</b><br>
+        ${escapeHTML(currentQuiz.explanation)}
+    `;
 
+    explanation.style.display = "block";
 
-    explanation.style.display =
-        "block";
-
-
-    next.style.display =
-        "block";
+    generate.style.display = "none";
+    next.style.display = "block";
 }
 
 
-function restartQuiz() {
+function restart() {
 
     score = 0;
-
     questionNumber = 0;
 
-    scoreElement.textContent =
-        "Score: 0";
+    scoreEl.textContent = "0";
 
-    document.getElementById(
-        "result"
-    ).style.display = "none";
-
-    document.getElementById(
-        "game"
-    ).style.display = "block";
+    result.style.display = "none";
 
     generateQuestion();
+}
+
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
 }
 
 </script>
 
 </body>
-
 </html>
