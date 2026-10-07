@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+>
 
 <title>NeuroQuiz AI</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -15,36 +22,33 @@
 
 :root{
     --purple:#6c3df5;
-    --purple2:#8b5cf6;
+    --purple-dark:#5229c9;
     --green:#20c997;
     --red:#ff5c70;
     --yellow:#ffca3a;
     --blue:#3d9bff;
     --bg:#f5f6fa;
-    --dark:#252333;
+    --text:#292735;
     --muted:#777584;
 }
 
 body{
     min-height:100vh;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f5f6fa;
-    color:var(--dark);
+    background:var(--bg);
+    color:var(--text);
 }
 
-/* TOP */
+/* HEADER */
 
 .top{
     height:64px;
     background:white;
-    border-bottom:1px solid #e7e7eb;
+    border-bottom:1px solid #e6e6eb;
     display:flex;
     align-items:center;
     justify-content:space-between;
     padding:0 22px;
-    position:sticky;
-    top:0;
-    z-index:20;
 }
 
 .logo{
@@ -59,11 +63,14 @@ body{
     width:38px;
     height:38px;
     border-radius:10px;
+    background:linear-gradient(
+        135deg,
+        #7041f5,
+        #9a6cff
+    );
     display:grid;
     place-items:center;
     color:white;
-    background:linear-gradient(135deg,#7041f5,#9b6cff);
-    font-size:20px;
 }
 
 .logo span{
@@ -75,7 +82,7 @@ body{
     color:var(--purple);
     padding:9px 15px;
     border-radius:20px;
-    font-weight:700;
+    font-weight:bold;
 }
 
 /* HOME */
@@ -83,29 +90,29 @@ body{
 .home{
     min-height:calc(100vh - 64px);
     display:flex;
-    justify-content:center;
     align-items:center;
-    padding:30px 18px;
+    justify-content:center;
+    padding:25px;
 }
 
 .home-card{
     width:min(680px,100%);
     background:white;
-    border-radius:24px;
     padding:45px 30px;
     text-align:center;
+    border-radius:24px;
     box-shadow:0 12px 45px rgba(30,20,60,.08);
 }
 
 .home-icon{
     width:85px;
     height:85px;
-    margin:0 auto 22px;
     border-radius:22px;
+    background:#eee8ff;
     display:grid;
     place-items:center;
     font-size:42px;
-    background:#eee8ff;
+    margin:auto auto 20px;
 }
 
 .home h1{
@@ -114,11 +121,10 @@ body{
 }
 
 .home p{
-    max-width:500px;
-    margin:auto;
     color:var(--muted);
-    font-size:16px;
     line-height:1.6;
+    max-width:520px;
+    margin:auto;
 }
 
 .start{
@@ -129,15 +135,14 @@ body{
     padding:16px 45px;
     border-radius:12px;
     font-size:17px;
-    font-weight:700;
+    font-weight:bold;
     cursor:pointer;
-    box-shadow:0 7px 0 #4f29c7;
-    transition:.15s;
+    box-shadow:0 6px 0 var(--purple-dark);
 }
 
-.start:hover{
-    transform:translateY(2px);
-    box-shadow:0 5px 0 #4f29c7;
+.start:active{
+    transform:translateY(3px);
+    box-shadow:0 3px 0 var(--purple-dark);
 }
 
 /* QUIZ */
@@ -153,7 +158,7 @@ body{
     margin:auto;
 }
 
-/* progress */
+/* PROGRESS */
 
 .progress-area{
     display:flex;
@@ -165,7 +170,7 @@ body{
 .progress{
     flex:1;
     height:10px;
-    background:#e1e2e8;
+    background:#dedfe5;
     border-radius:20px;
     overflow:hidden;
 }
@@ -174,17 +179,16 @@ body{
     height:100%;
     width:0%;
     background:var(--purple);
-    border-radius:20px;
     transition:.4s;
 }
 
 .counter{
-    font-weight:700;
-    color:#6e6c78;
     font-size:14px;
+    font-weight:bold;
+    color:var(--muted);
 }
 
-/* question */
+/* QUESTION */
 
 .question-card{
     background:white;
@@ -196,15 +200,13 @@ body{
 }
 
 .ai-label{
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    color:var(--purple);
+    display:inline-block;
     background:#f0ebff;
+    color:var(--purple);
     padding:7px 12px;
     border-radius:20px;
     font-size:12px;
-    font-weight:700;
+    font-weight:bold;
     margin-bottom:20px;
 }
 
@@ -213,7 +215,7 @@ body{
     line-height:1.25;
 }
 
-/* answers */
+/* ANSWERS */
 
 .answers{
     display:grid;
@@ -229,7 +231,7 @@ body{
     padding:20px;
     text-align:left;
     font-size:17px;
-    font-weight:700;
+    font-weight:bold;
     cursor:pointer;
     box-shadow:0 5px 0 rgba(0,0,0,.15);
     transition:.15s;
@@ -240,11 +242,6 @@ body{
 
 .answer:hover{
     transform:translateY(-2px);
-}
-
-.answer:active{
-    transform:translateY(3px);
-    box-shadow:0 2px 0 rgba(0,0,0,.15);
 }
 
 .answer:nth-child(1){
@@ -263,6 +260,10 @@ body{
     background:#24b98b;
 }
 
+.answer:active{
+    transform:translateY(3px);
+}
+
 .letter{
     width:40px;
     height:40px;
@@ -271,39 +272,37 @@ body{
     background:rgba(255,255,255,.2);
     display:grid;
     place-items:center;
-    font-size:16px;
 }
 
 .answer.correct{
     outline:5px solid rgba(32,201,151,.25);
-    transform:scale(1.015);
 }
 
 .answer.wrong{
-    opacity:.55;
+    opacity:.5;
 }
 
 .answer:disabled{
     cursor:default;
 }
 
-/* explanation */
+/* EXPLANATION */
 
 .explanation{
     display:none;
     margin-top:18px;
     background:white;
-    padding:18px 20px;
+    padding:18px;
     border-radius:15px;
-    box-shadow:0 5px 20px rgba(0,0,0,.06);
     line-height:1.5;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
 }
 
 .explanation strong{
     color:var(--purple);
 }
 
-/* next */
+/* NEXT */
 
 .next{
     display:none;
@@ -315,11 +314,11 @@ body{
     background:var(--purple);
     color:white;
     font-size:16px;
-    font-weight:700;
+    font-weight:bold;
     cursor:pointer;
 }
 
-/* loading */
+/* LOADING */
 
 .loading{
     display:none;
@@ -338,10 +337,12 @@ body{
 }
 
 @keyframes spin{
-    to{transform:rotate(360deg)}
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-/* result */
+/* RESULT */
 
 .result{
     display:none;
@@ -349,21 +350,20 @@ body{
     background:white;
     border-radius:22px;
     padding:60px 25px;
-    box-shadow:0 10px 40px rgba(0,0,0,.07);
 }
 
 .result-icon{
     font-size:65px;
-    margin-bottom:15px;
 }
 
 .result h1{
     font-size:34px;
+    margin:15px 0 5px;
 }
 
 .final-score{
     font-size:38px;
-    font-weight:800;
+    font-weight:bold;
     color:var(--purple);
     margin:18px;
 }
@@ -374,11 +374,20 @@ body{
     color:white;
     padding:14px 30px;
     border-radius:12px;
-    font-weight:700;
+    font-weight:bold;
     cursor:pointer;
 }
 
-/* mobile */
+/* PRELOAD STATUS */
+
+.preload{
+    text-align:center;
+    color:#aaa;
+    font-size:12px;
+    margin-top:12px;
+}
+
+/* MOBILE */
 
 @media(max-width:650px){
 
@@ -416,16 +425,24 @@ body{
         font-size:29px;
     }
 }
+
 </style>
+
 </head>
 
 <body>
 
+
 <header class="top">
 
     <div class="logo">
-        <div class="logo-icon">✦</div>
+
+        <div class="logo-icon">
+            ✦
+        </div>
+
         Neuro<span>Quiz</span> AI
+
     </div>
 
     <div class="score">
@@ -451,14 +468,14 @@ body{
 
         <p>
             Test your knowledge with
-            AI-generated questions covering
-            biology, chemistry, physics,
-            astronomy and more.
+            AI-generated science questions.
+            Every question is generated by Gemini.
         </p>
 
         <button
             class="start"
-            onclick="startQuiz()">
+            onclick="startQuiz()"
+        >
             Start Quiz →
         </button>
 
@@ -473,22 +490,29 @@ body{
 
 <div class="quiz-wrap">
 
+
     <div class="progress-area">
 
         <div class="progress">
+
             <div
                 id="progress"
-                class="progress-bar">
-            </div>
+                class="progress-bar"
+            ></div>
+
         </div>
 
         <div class="counter">
+
             <span id="number">0</span>
             / 10
+
         </div>
 
     </div>
 
+
+    <!-- QUESTION -->
 
     <div id="questionArea">
 
@@ -500,50 +524,65 @@ body{
 
             <h1
                 id="question"
-                class="question">
-            </h1>
+                class="question"
+            ></h1>
 
         </div>
 
 
         <div
             id="answers"
-            class="answers">
-        </div>
+            class="answers"
+        ></div>
 
 
         <div
             id="explanation"
-            class="explanation">
+            class="explanation"
+        ></div>
+
+
+        <div
+            id="preload"
+            class="preload"
+        >
+            🤖 Preparing next question...
         </div>
 
 
         <button
             id="next"
             class="next"
-            onclick="nextQuestion()">
+            onclick="nextQuestion()"
+        >
             Next Question →
         </button>
 
     </div>
 
 
+    <!-- LOADING -->
+
     <div
         id="loading"
-        class="loading">
+        class="loading"
+    >
 
         <div class="loader"></div>
 
         <h3>
-            AI is creating your question...
+            Preparing your first question...
         </h3>
 
     </div>
 
 
+    <!-- RESULT -->
+
     <div
         id="result"
-        class="result">
+        class="result"
+    >
 
         <div class="result-icon">
             🏆
@@ -554,17 +593,18 @@ body{
         </h1>
 
         <p>
-            Here's your final score
+            Your final score
         </p>
 
         <div
             id="finalScore"
-            class="final-score">
-        </div>
+            class="final-score"
+        ></div>
 
         <button
             class="restart"
-            onclick="restart()">
+            onclick="restart()"
+        >
             Play Again
         </button>
 
@@ -578,12 +618,27 @@ body{
 <script>
 
 let score = 0;
+
 let questionNumber = 0;
+
 let currentQuiz = null;
+
+/*
+    This is the important part.
+
+    Instead of waiting for Gemini after
+    every question, we immediately start
+    preparing the next question.
+*/
+
+let nextQuestionPromise = null;
+
 let answered = false;
 
 const MAX_QUESTIONS = 10;
 
+
+/* START */
 
 function startQuiz(){
 
@@ -593,18 +648,15 @@ function startQuiz(){
     document.getElementById("quiz")
         .style.display = "block";
 
-    generateQuestion();
+    loadFirstQuestion();
 }
 
 
-async function generateQuestion(){
+/*
+    FIRST QUESTION
+*/
 
-    if(questionNumber >= MAX_QUESTIONS){
-        showResult();
-        return;
-    }
-
-    answered = false;
+async function loadFirstQuestion(){
 
     document.getElementById("questionArea")
         .style.display = "none";
@@ -612,108 +664,190 @@ async function generateQuestion(){
     document.getElementById("loading")
         .style.display = "block";
 
-    document.getElementById("next")
-        .style.display = "none";
-
-    document.getElementById("explanation")
-        .style.display = "none";
-
     try{
 
-        const response =
-            await fetch("/api/question");
+        currentQuiz =
+            await fetchQuestion();
 
-        const data =
-            await response.json();
+        showQuestion();
 
-        if(!response.ok){
-            throw new Error(
-                data.error ||
-                "Unable to generate question."
-            );
-        }
+        /*
+            Start preparing Question 2
+            immediately.
+        */
 
-        currentQuiz = data;
-
-        questionNumber++;
-
-        document.getElementById("number")
-            .textContent = questionNumber;
-
-        document.getElementById("score")
-            .textContent = score;
-
-        document.getElementById("progress")
-            .style.width =
-            ((questionNumber - 1) /
-            MAX_QUESTIONS * 100) + "%";
-
-        document.getElementById("question")
-            .textContent = data.question;
-
-        const answers =
-            document.getElementById("answers");
-
-        answers.innerHTML = "";
-
-        data.choices.forEach(
-            (choice,index)=>{
-
-                const button =
-                    document.createElement("button");
-
-                button.className = "answer";
-
-                button.innerHTML = `
-                    <span class="letter">
-                        ${String.fromCharCode(65+index)}
-                    </span>
-                    ${escapeHTML(choice)}
-                `;
-
-                button.onclick = () =>
-                    selectAnswer(index,button);
-
-                answers.appendChild(button);
-            }
-        );
-
-        document.getElementById("loading")
-            .style.display = "none";
-
-        document.getElementById("questionArea")
-            .style.display = "block";
+        preloadNext();
 
     }catch(error){
 
-        document.getElementById("loading")
-            .style.display = "none";
+        showError(error);
 
-        document.getElementById("questionArea")
-            .style.display = "block";
-
-        document.getElementById("question")
-            .textContent = "⚠️ Error";
-
-        document.getElementById("answers")
-            .innerHTML = `
-                <div style="
-                    grid-column:1/-1;
-                    background:white;
-                    padding:20px;
-                    border-radius:15px;
-                    color:#777;
-                    text-align:center;">
-                    ${escapeHTML(error.message)}
-                </div>
-            `;
     }
 }
 
 
-function selectAnswer(selected,button){
+/*
+    FETCH FROM GEMINI
+*/
 
-    if(answered) return;
+async function fetchQuestion(){
+
+    const response =
+        await fetch(
+            "/api/question?t=" +
+            Date.now() +
+            Math.random()
+        );
+
+    const data =
+        await response.json();
+
+    if(!response.ok){
+
+        throw new Error(
+            data.error ||
+            "Gemini request failed."
+        );
+
+    }
+
+    return data;
+}
+
+
+/*
+    PRELOAD NEXT QUESTION
+*/
+
+function preloadNext(){
+
+    /*
+        Don't create another request
+        if one is already running.
+    */
+
+    if(nextQuestionPromise){
+        return;
+    }
+
+    document.getElementById("preload")
+        .textContent =
+        "🤖 Preparing next question...";
+
+
+    nextQuestionPromise =
+        fetchQuestion()
+        .then(data => {
+
+            document.getElementById("preload")
+                .textContent =
+                "✓ Next question ready";
+
+            return data;
+
+        })
+        .catch(error => {
+
+            console.error(
+                "Preload error:",
+                error
+            );
+
+            return null;
+
+        });
+}
+
+
+/*
+    DISPLAY QUESTION
+*/
+
+function showQuestion(){
+
+    answered = false;
+
+    questionNumber++;
+
+    document.getElementById("number")
+        .textContent =
+        questionNumber;
+
+    document.getElementById("score")
+        .textContent =
+        score;
+
+    document.getElementById("progress")
+        .style.width =
+        ((questionNumber - 1) /
+        MAX_QUESTIONS * 100) + "%";
+
+
+    document.getElementById("question")
+        .textContent =
+        currentQuiz.question;
+
+
+    const answers =
+        document.getElementById("answers");
+
+    answers.innerHTML = "";
+
+
+    currentQuiz.choices.forEach(
+        (choice,index)=>{
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "answer";
+
+            button.innerHTML = `
+                <span class="letter">
+                    ${String.fromCharCode(65+index)}
+                </span>
+                ${escapeHTML(choice)}
+            `;
+
+            button.onclick =
+                () => selectAnswer(
+                    index,
+                    button
+                );
+
+            answers.appendChild(button);
+
+        }
+    );
+
+
+    document.getElementById("explanation")
+        .style.display = "none";
+
+    document.getElementById("next")
+        .style.display = "none";
+
+    document.getElementById("loading")
+        .style.display = "none";
+
+    document.getElementById("questionArea")
+        .style.display = "block";
+}
+
+
+/*
+    ANSWER
+*/
+
+function selectAnswer(
+    selected,
+    selectedButton
+){
+
+    if(answered){
+        return;
+    }
 
     answered = true;
 
@@ -723,74 +857,150 @@ function selectAnswer(selected,button){
     const buttons =
         document.querySelectorAll(".answer");
 
-    buttons.forEach(
-        (btn,index)=>{
 
-            btn.disabled = true;
+    buttons.forEach(
+        (button,index)=>{
+
+            button.disabled = true;
 
             if(index === correct){
-                btn.classList.add("correct");
+
+                button.classList.add(
+                    "correct"
+                );
+
             }
+
         }
     );
+
 
     if(selected === correct){
 
         score++;
 
-        button.classList.add("correct");
+        selectedButton.classList.add(
+            "correct"
+        );
 
     }else{
 
-        button.classList.add("wrong");
+        selectedButton.classList.add(
+            "wrong"
+        );
 
     }
 
+
     document.getElementById("score")
-        .textContent = score;
+        .textContent =
+        score;
+
 
     document.getElementById("explanation")
         .innerHTML = `
             <strong>💡 Explanation</strong><br>
-            ${escapeHTML(currentQuiz.explanation)}
+            ${escapeHTML(
+                currentQuiz.explanation
+            )}
         `;
+
 
     document.getElementById("explanation")
         .style.display = "block";
+
 
     document.getElementById("next")
         .style.display = "block";
 }
 
 
-function nextQuestion(){
+/*
+    NEXT QUESTION
 
-    document.getElementById("progress")
-        .style.width =
-        (questionNumber / MAX_QUESTIONS * 100) + "%";
+    Because it was already preloaded,
+    this should be much faster.
+*/
+
+async function nextQuestion(){
 
     if(questionNumber >= MAX_QUESTIONS){
 
         showResult();
 
-    }else{
+        return;
+    }
 
-        generateQuestion();
+
+    document.getElementById("next")
+        .style.display = "none";
+
+
+    document.getElementById("preload")
+        .textContent =
+        "Loading...";
+
+
+    /*
+        Use the already-running request.
+    */
+
+    let nextQuiz =
+        await nextQuestionPromise;
+
+
+    /*
+        If preload failed, request again.
+    */
+
+    if(!nextQuiz){
+
+        nextQuiz =
+            await fetchQuestion();
 
     }
+
+
+    /*
+        Clear old promise.
+    */
+
+    nextQuestionPromise = null;
+
+
+    /*
+        Display immediately.
+    */
+
+    currentQuiz =
+        nextQuiz;
+
+    showQuestion();
+
+
+    /*
+        Start preparing another question
+        while user answers this one.
+    */
+
+    preloadNext();
 }
 
+
+/*
+    RESULT
+*/
 
 function showResult(){
 
     document.getElementById("questionArea")
         .style.display = "none";
 
-    document.getElementById("loading")
-        .style.display = "none";
-
     document.getElementById("result")
         .style.display = "block";
+
+    document.getElementById("progress")
+        .style.width = "100%";
 
     document.getElementById("finalScore")
         .textContent =
@@ -798,10 +1008,19 @@ function showResult(){
 }
 
 
+/*
+    RESTART
+*/
+
 function restart(){
 
     score = 0;
+
     questionNumber = 0;
+
+    currentQuiz = null;
+
+    nextQuestionPromise = null;
 
     document.getElementById("score")
         .textContent = "0";
@@ -809,9 +1028,45 @@ function restart(){
     document.getElementById("result")
         .style.display = "none";
 
-    generateQuestion();
+    loadFirstQuestion();
 }
 
+
+/*
+    ERROR
+*/
+
+function showError(error){
+
+    document.getElementById("loading")
+        .style.display = "none";
+
+    document.getElementById("questionArea")
+        .style.display = "block";
+
+    document.getElementById("question")
+        .textContent =
+        "⚠️ Unable to generate question";
+
+    document.getElementById("answers")
+        .innerHTML = `
+            <div style="
+                grid-column:1/-1;
+                background:white;
+                padding:20px;
+                border-radius:15px;
+                color:#777;
+                text-align:center;
+            ">
+                ${escapeHTML(error.message)}
+            </div>
+        `;
+}
+
+
+/*
+    SECURITY
+*/
 
 function escapeHTML(text){
 
@@ -826,4 +1081,5 @@ function escapeHTML(text){
 </script>
 
 </body>
+
 </html>
