@@ -1,1085 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width,initial-scale=1"
->
-
-<title>NeuroQuiz AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Science Quiz</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+* {
+  box-sizing: border-box;
 }
 
-:root{
-    --purple:#6c3df5;
-    --purple-dark:#5229c9;
-    --green:#20c997;
-    --red:#ff5c70;
-    --yellow:#ffca3a;
-    --blue:#3d9bff;
-    --bg:#f5f6fa;
-    --text:#292735;
-    --muted:#777584;
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f7f7fb;
+  color: #252525;
 }
 
-body{
-    min-height:100vh;
-    font-family:Arial,Helvetica,sans-serif;
-    background:var(--bg);
-    color:var(--text);
+.topbar {
+  height: 70px;
+  background: white;
+  border-bottom: 1px solid #e8e8ee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
 }
 
-/* HEADER */
-
-.top{
-    height:64px;
-    background:white;
-    border-bottom:1px solid #e6e6eb;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 22px;
+.logo {
+  font-size: 23px;
+  font-weight: 800;
+  color: #6c35de;
 }
 
-.logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:20px;
-    font-weight:800;
+.badge {
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+  background: #f1efff;
+  padding: 9px 14px;
+  border-radius: 20px;
 }
 
-.logo-icon{
-    width:38px;
-    height:38px;
-    border-radius:10px;
-    background:linear-gradient(
-        135deg,
-        #7041f5,
-        #9a6cff
-    );
-    display:grid;
-    place-items:center;
-    color:white;
+.container {
+  width: min(900px, 92%);
+  margin: 35px auto;
 }
 
-.logo span{
-    color:var(--purple);
+.screen {
+  display: none;
 }
 
-.score{
-    background:#f0ebff;
-    color:var(--purple);
-    padding:9px 15px;
-    border-radius:20px;
-    font-weight:bold;
+.screen.active {
+  display: block;
 }
 
-/* HOME */
-
-.home{
-    min-height:calc(100vh - 64px);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:25px;
+.start-card,
+.quiz-card,
+.result-card {
+  background: white;
+  border-radius: 22px;
+  padding: 35px;
+  box-shadow: 0 8px 30px rgba(40, 20, 80, 0.08);
 }
 
-.home-card{
-    width:min(680px,100%);
-    background:white;
-    padding:45px 30px;
-    text-align:center;
-    border-radius:24px;
-    box-shadow:0 12px 45px rgba(30,20,60,.08);
+.start-card {
+  text-align: center;
+  margin-top: 70px;
 }
 
-.home-icon{
-    width:85px;
-    height:85px;
-    border-radius:22px;
-    background:#eee8ff;
-    display:grid;
-    place-items:center;
-    font-size:42px;
-    margin:auto auto 20px;
+.start-icon {
+  font-size: 60px;
+  margin-bottom: 15px;
 }
 
-.home h1{
-    font-size:38px;
-    margin-bottom:12px;
+h1 {
+  font-size: 38px;
+  margin: 10px 0;
 }
 
-.home p{
-    color:var(--muted);
-    line-height:1.6;
-    max-width:520px;
-    margin:auto;
+.subtitle {
+  color: #777;
+  font-size: 16px;
+  margin-bottom: 30px;
 }
 
-.start{
-    margin-top:30px;
-    border:0;
-    background:var(--purple);
-    color:white;
-    padding:16px 45px;
-    border-radius:12px;
-    font-size:17px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 6px 0 var(--purple-dark);
+button {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
-.start:active{
-    transform:translateY(3px);
-    box-shadow:0 3px 0 var(--purple-dark);
+.start-btn,
+.next-btn,
+.restart-btn {
+  background: #6c35de;
+  color: white;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 15px 30px;
+  border-radius: 12px;
 }
 
-/* QUIZ */
-
-.quiz{
-    display:none;
-    min-height:calc(100vh - 64px);
-    padding:20px;
+.start-btn:hover,
+.next-btn:hover,
+.restart-btn:hover {
+  background: #5725c4;
 }
 
-.quiz-wrap{
-    width:min(1000px,100%);
-    margin:auto;
+.progress-area {
+  margin-bottom: 22px;
 }
 
-/* PROGRESS */
-
-.progress-area{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    margin-bottom:20px;
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 700;
+  color: #777;
+  margin-bottom: 9px;
 }
 
-.progress{
-    flex:1;
-    height:10px;
-    background:#dedfe5;
-    border-radius:20px;
-    overflow:hidden;
+.progress {
+  width: 100%;
+  height: 9px;
+  background: #e9e7f0;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
-.progress-bar{
-    height:100%;
-    width:0%;
-    background:var(--purple);
-    transition:.4s;
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #6c35de;
+  transition: width .3s;
 }
 
-.counter{
-    font-size:14px;
-    font-weight:bold;
-    color:var(--muted);
+.question {
+  font-size: 29px;
+  line-height: 1.3;
+  margin: 20px 0 28px;
 }
 
-/* QUESTION */
-
-.question-card{
-    background:white;
-    border-radius:20px;
-    padding:35px;
-    text-align:center;
-    box-shadow:0 8px 30px rgba(30,20,60,.07);
-    margin-bottom:18px;
+.answers {
+  display: grid;
+  gap: 14px;
 }
 
-.ai-label{
-    display:inline-block;
-    background:#f0ebff;
-    color:var(--purple);
-    padding:7px 12px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:bold;
-    margin-bottom:20px;
+.answer {
+  width: 100%;
+  text-align: left;
+  padding: 19px;
+  border: 2px solid #e5e4ea;
+  background: white;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  transition: .15s;
 }
 
-.question{
-    font-size:clamp(25px,4vw,38px);
-    line-height:1.25;
+.answer:hover:not(:disabled) {
+  border-color: #6c35de;
+  background: #faf8ff;
 }
 
-/* ANSWERS */
-
-.answers{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
+.answer.correct {
+  border-color: #20a464;
+  background: #e9fff4;
 }
 
-.answer{
-    min-height:100px;
-    border:0;
-    border-radius:17px;
-    color:white;
-    padding:20px;
-    text-align:left;
-    font-size:17px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 5px 0 rgba(0,0,0,.15);
-    transition:.15s;
-    display:flex;
-    align-items:center;
-    gap:15px;
+.answer.wrong {
+  border-color: #e04b4b;
+  background: #fff0f0;
 }
 
-.answer:hover{
-    transform:translateY(-2px);
+.answer:disabled {
+  cursor: default;
 }
 
-.answer:nth-child(1){
-    background:#e94f64;
+.feedback {
+  min-height: 50px;
+  margin-top: 20px;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
-.answer:nth-child(2){
-    background:#3d8df5;
+.feedback.good {
+  color: #16834e;
 }
 
-.answer:nth-child(3){
-    background:#f4ae24;
+.feedback.bad {
+  color: #d03939;
 }
 
-.answer:nth-child(4){
-    background:#24b98b;
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
 }
 
-.answer:active{
-    transform:translateY(3px);
+.score {
+  font-weight: 800;
 }
 
-.letter{
-    width:40px;
-    height:40px;
-    min-width:40px;
-    border-radius:11px;
-    background:rgba(255,255,255,.2);
-    display:grid;
-    place-items:center;
+.next-btn {
+  display: none;
 }
 
-.answer.correct{
-    outline:5px solid rgba(32,201,151,.25);
+.loading {
+  text-align: center;
+  padding: 70px 20px;
 }
 
-.answer.wrong{
-    opacity:.5;
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid #e5ddff;
+  border-top-color: #6c35de;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 20px;
 }
 
-.answer:disabled{
-    cursor:default;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* EXPLANATION */
-
-.explanation{
-    display:none;
-    margin-top:18px;
-    background:white;
-    padding:18px;
-    border-radius:15px;
-    line-height:1.5;
-    box-shadow:0 5px 20px rgba(0,0,0,.06);
+.source {
+  font-size: 12px;
+  color: #999;
+  margin-top: 18px;
 }
 
-.explanation strong{
-    color:var(--purple);
+.result-card {
+  text-align: center;
+  margin-top: 70px;
 }
 
-/* NEXT */
-
-.next{
-    display:none;
-    width:100%;
-    margin-top:18px;
-    padding:16px;
-    border:0;
-    border-radius:13px;
-    background:var(--purple);
-    color:white;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
+.result-score {
+  font-size: 58px;
+  font-weight: 900;
+  color: #6c35de;
+  margin: 20px;
 }
 
-/* LOADING */
+@media(max-width:600px) {
+  .topbar {
+    padding: 0 17px;
+  }
 
-.loading{
-    display:none;
-    text-align:center;
-    padding:100px 20px;
+  .container {
+    width: 94%;
+    margin: 20px auto;
+  }
+
+  .start-card,
+  .quiz-card,
+  .result-card {
+    padding: 23px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .question {
+    font-size: 23px;
+  }
+
+  .answer {
+    font-size: 15px;
+  }
 }
-
-.loader{
-    width:48px;
-    height:48px;
-    border:5px solid #ddd;
-    border-top-color:var(--purple);
-    border-radius:50%;
-    animation:spin .7s linear infinite;
-    margin:auto auto 18px;
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-/* RESULT */
-
-.result{
-    display:none;
-    text-align:center;
-    background:white;
-    border-radius:22px;
-    padding:60px 25px;
-}
-
-.result-icon{
-    font-size:65px;
-}
-
-.result h1{
-    font-size:34px;
-    margin:15px 0 5px;
-}
-
-.final-score{
-    font-size:38px;
-    font-weight:bold;
-    color:var(--purple);
-    margin:18px;
-}
-
-.restart{
-    border:0;
-    background:var(--purple);
-    color:white;
-    padding:14px 30px;
-    border-radius:12px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-/* PRELOAD STATUS */
-
-.preload{
-    text-align:center;
-    color:#aaa;
-    font-size:12px;
-    margin-top:12px;
-}
-
-/* MOBILE */
-
-@media(max-width:650px){
-
-    .top{
-        padding:0 14px;
-    }
-
-    .logo{
-        font-size:17px;
-    }
-
-    .quiz{
-        padding:13px;
-    }
-
-    .question-card{
-        padding:25px 18px;
-    }
-
-    .answers{
-        grid-template-columns:1fr;
-        gap:12px;
-    }
-
-    .answer{
-        min-height:75px;
-        font-size:15px;
-    }
-
-    .home-card{
-        padding:35px 20px;
-    }
-
-    .home h1{
-        font-size:29px;
-    }
-}
-
 </style>
-
 </head>
 
 <body>
 
-
-<header class="top">
-
-    <div class="logo">
-
-        <div class="logo-icon">
-            ✦
-        </div>
-
-        Neuro<span>Quiz</span> AI
-
-    </div>
-
-    <div class="score">
-        🏆 <span id="score">0</span>
-    </div>
-
+<header class="topbar">
+  <div class="logo">✦ Science Quiz</div>
+  <div class="badge">AI Powered</div>
 </header>
 
+<main class="container">
 
-<!-- HOME -->
-
-<section id="home" class="home">
-
-    <div class="home-card">
-
-        <div class="home-icon">
-            🧠
-        </div>
-
-        <h1>
-            Science Challenge
-        </h1>
-
-        <p>
-            Test your knowledge with
-            AI-generated science questions.
-            Every question is generated by Gemini.
-        </p>
-
-        <button
-            class="start"
-            onclick="startQuiz()"
-        >
-            Start Quiz →
-        </button>
-
-    </div>
-
+<section id="startScreen" class="screen active">
+  <div class="start-card">
+    <div class="start-icon">🧪</div>
+    <h1>Science Quiz</h1>
+    <p class="subtitle">
+      Test your knowledge with random science questions.
+    </p>
+    <button class="start-btn" onclick="startQuiz()">
+      Start Quiz
+    </button>
+  </div>
 </section>
 
+<section id="quizScreen" class="screen">
 
-<!-- QUIZ -->
-
-<section id="quiz" class="quiz">
-
-<div class="quiz-wrap">
-
+  <div class="quiz-card">
 
     <div class="progress-area">
+      <div class="progress-info">
+        <span id="questionNumber">Question 1 of 10</span>
+        <span id="scoreText">Score: 0</span>
+      </div>
 
-        <div class="progress">
-
-            <div
-                id="progress"
-                class="progress-bar"
-            ></div>
-
-        </div>
-
-        <div class="counter">
-
-            <span id="number">0</span>
-            / 10
-
-        </div>
-
+      <div class="progress">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
     </div>
 
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <strong>Generating question...</strong>
+    </div>
 
-    <!-- QUESTION -->
+    <div id="questionArea" style="display:none">
 
-    <div id="questionArea">
+      <div id="question" class="question"></div>
 
-        <div class="question-card">
+      <div id="answers" class="answers"></div>
 
-            <div class="ai-label">
-                ✨ AI GENERATED
-            </div>
+      <div id="feedback" class="feedback"></div>
 
-            <h1
-                id="question"
-                class="question"
-            ></h1>
-
-        </div>
-
-
-        <div
-            id="answers"
-            class="answers"
-        ></div>
-
-
-        <div
-            id="explanation"
-            class="explanation"
-        ></div>
-
-
-        <div
-            id="preload"
-            class="preload"
-        >
-            🤖 Preparing next question...
-        </div>
-
-
-        <button
-            id="next"
-            class="next"
-            onclick="nextQuestion()"
-        >
-            Next Question →
+      <div class="bottom">
+        <div id="source" class="source"></div>
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">
+          Next →
         </button>
+      </div>
 
     </div>
 
-
-    <!-- LOADING -->
-
-    <div
-        id="loading"
-        class="loading"
-    >
-
-        <div class="loader"></div>
-
-        <h3>
-            Preparing your first question...
-        </h3>
-
-    </div>
-
-
-    <!-- RESULT -->
-
-    <div
-        id="result"
-        class="result"
-    >
-
-        <div class="result-icon">
-            🏆
-        </div>
-
-        <h1>
-            Quiz Complete!
-        </h1>
-
-        <p>
-            Your final score
-        </p>
-
-        <div
-            id="finalScore"
-            class="final-score"
-        ></div>
-
-        <button
-            class="restart"
-            onclick="restart()"
-        >
-            Play Again
-        </button>
-
-    </div>
-
-</div>
+  </div>
 
 </section>
 
+<section id="resultScreen" class="screen">
+  <div class="result-card">
+    <div class="start-icon">🏆</div>
+    <h1>Quiz Complete!</h1>
+
+    <div id="resultScore" class="result-score">
+      0/10
+    </div>
+
+    <p id="resultMessage" class="subtitle"></p>
+
+    <button class="restart-btn" onclick="startQuiz()">
+      Play Again
+    </button>
+  </div>
+</section>
+
+</main>
 
 <script>
-
 let score = 0;
-
 let questionNumber = 0;
-
 let currentQuiz = null;
-
-/*
-    This is the important part.
-
-    Instead of waiting for Gemini after
-    every question, we immediately start
-    preparing the next question.
-*/
-
-let nextQuestionPromise = null;
-
 let answered = false;
 
 const MAX_QUESTIONS = 10;
 
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
 
-/* START */
-
-function startQuiz(){
-
-    document.getElementById("home")
-        .style.display = "none";
-
-    document.getElementById("quiz")
-        .style.display = "block";
-
-    loadFirstQuestion();
+  document.getElementById(id).classList.add("active");
 }
 
+function startQuiz() {
+  score = 0;
+  questionNumber = 0;
+  currentQuiz = null;
+  answered = false;
 
-/*
-    FIRST QUESTION
-*/
-
-async function loadFirstQuestion(){
-
-    document.getElementById("questionArea")
-        .style.display = "none";
-
-    document.getElementById("loading")
-        .style.display = "block";
-
-    try{
-
-        currentQuiz =
-            await fetchQuestion();
-
-        showQuestion();
-
-        /*
-            Start preparing Question 2
-            immediately.
-        */
-
-        preloadNext();
-
-    }catch(error){
-
-        showError(error);
-
-    }
+  showScreen("quizScreen");
+  loadQuestion();
 }
 
+async function fetchQuestion() {
+  const response = await fetch(
+    "/api/question?t=" + Date.now()
+  );
 
-/*
-    FETCH FROM GEMINI
-*/
+  const data = await response.json();
 
-async function fetchQuestion(){
+  if (!response.ok) {
+    throw new Error(data.error || "Failed to load question.");
+  }
 
-    const response =
-        await fetch(
-            "/api/question?t=" +
-            Date.now() +
-            Math.random()
-        );
-
-    const data =
-        await response.json();
-
-    if(!response.ok){
-
-        throw new Error(
-            data.error ||
-            "Gemini request failed."
-        );
-
-    }
-
-    return data;
+  return data;
 }
 
+async function loadQuestion() {
+  answered = false;
 
-/*
-    PRELOAD NEXT QUESTION
-*/
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("questionArea").style.display = "none";
 
-function preloadNext(){
+  document.getElementById("questionNumber").textContent =
+    `Question ${questionNumber + 1} of ${MAX_QUESTIONS}`;
 
-    /*
-        Don't create another request
-        if one is already running.
-    */
+  document.getElementById("scoreText").textContent =
+    `Score: ${score}`;
 
-    if(nextQuestionPromise){
-        return;
-    }
+  document.getElementById("progressFill").style.width =
+    `${(questionNumber / MAX_QUESTIONS) * 100}%`;
 
-    document.getElementById("preload")
-        .textContent =
-        "🤖 Preparing next question...";
-
-
-    nextQuestionPromise =
-        fetchQuestion()
-        .then(data => {
-
-            document.getElementById("preload")
-                .textContent =
-                "✓ Next question ready";
-
-            return data;
-
-        })
-        .catch(error => {
-
-            console.error(
-                "Preload error:",
-                error
-            );
-
-            return null;
-
-        });
-}
-
-
-/*
-    DISPLAY QUESTION
-*/
-
-function showQuestion(){
-
-    answered = false;
-
-    questionNumber++;
-
-    document.getElementById("number")
-        .textContent =
-        questionNumber;
-
-    document.getElementById("score")
-        .textContent =
-        score;
-
-    document.getElementById("progress")
-        .style.width =
-        ((questionNumber - 1) /
-        MAX_QUESTIONS * 100) + "%";
-
-
-    document.getElementById("question")
-        .textContent =
-        currentQuiz.question;
-
-
-    const answers =
-        document.getElementById("answers");
-
-    answers.innerHTML = "";
-
-
-    currentQuiz.choices.forEach(
-        (choice,index)=>{
-
-            const button =
-                document.createElement("button");
-
-            button.className =
-                "answer";
-
-            button.innerHTML = `
-                <span class="letter">
-                    ${String.fromCharCode(65+index)}
-                </span>
-                ${escapeHTML(choice)}
-            `;
-
-            button.onclick =
-                () => selectAnswer(
-                    index,
-                    button
-                );
-
-            answers.appendChild(button);
-
-        }
-    );
-
-
-    document.getElementById("explanation")
-        .style.display = "none";
-
-    document.getElementById("next")
-        .style.display = "none";
-
-    document.getElementById("loading")
-        .style.display = "none";
-
-    document.getElementById("questionArea")
-        .style.display = "block";
-}
-
-
-/*
-    ANSWER
-*/
-
-function selectAnswer(
-    selected,
-    selectedButton
-){
-
-    if(answered){
-        return;
-    }
-
-    answered = true;
-
-    const correct =
-        currentQuiz.answer;
-
-    const buttons =
-        document.querySelectorAll(".answer");
-
-
-    buttons.forEach(
-        (button,index)=>{
-
-            button.disabled = true;
-
-            if(index === correct){
-
-                button.classList.add(
-                    "correct"
-                );
-
-            }
-
-        }
-    );
-
-
-    if(selected === correct){
-
-        score++;
-
-        selectedButton.classList.add(
-            "correct"
-        );
-
-    }else{
-
-        selectedButton.classList.add(
-            "wrong"
-        );
-
-    }
-
-
-    document.getElementById("score")
-        .textContent =
-        score;
-
-
-    document.getElementById("explanation")
-        .innerHTML = `
-            <strong>💡 Explanation</strong><br>
-            ${escapeHTML(
-                currentQuiz.explanation
-            )}
-        `;
-
-
-    document.getElementById("explanation")
-        .style.display = "block";
-
-
-    document.getElementById("next")
-        .style.display = "block";
-}
-
-
-/*
-    NEXT QUESTION
-
-    Because it was already preloaded,
-    this should be much faster.
-*/
-
-async function nextQuestion(){
-
-    if(questionNumber >= MAX_QUESTIONS){
-
-        showResult();
-
-        return;
-    }
-
-
-    document.getElementById("next")
-        .style.display = "none";
-
-
-    document.getElementById("preload")
-        .textContent =
-        "Loading...";
-
-
-    /*
-        Use the already-running request.
-    */
-
-    let nextQuiz =
-        await nextQuestionPromise;
-
-
-    /*
-        If preload failed, request again.
-    */
-
-    if(!nextQuiz){
-
-        nextQuiz =
-            await fetchQuestion();
-
-    }
-
-
-    /*
-        Clear old promise.
-    */
-
-    nextQuestionPromise = null;
-
-
-    /*
-        Display immediately.
-    */
-
-    currentQuiz =
-        nextQuiz;
-
+  try {
+    currentQuiz = await fetchQuestion();
     showQuestion();
-
-
-    /*
-        Start preparing another question
-        while user answers this one.
-    */
-
-    preloadNext();
+  } catch (error) {
+    // This should rarely happen because API already has fallback.
+    showError();
+  }
 }
 
+function showQuestion() {
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("questionArea").style.display = "block";
 
-/*
-    RESULT
-*/
+  document.getElementById("question").textContent =
+    currentQuiz.question;
 
-function showResult(){
+  const answers = document.getElementById("answers");
+  answers.innerHTML = "";
 
-    document.getElementById("questionArea")
-        .style.display = "none";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("feedback").className = "feedback";
 
-    document.getElementById("result")
-        .style.display = "block";
+  document.getElementById("nextBtn").style.display = "none";
 
-    document.getElementById("progress")
-        .style.width = "100%";
+  currentQuiz.choices.forEach((choice, index) => {
+    const button = document.createElement("button");
 
-    document.getElementById("finalScore")
-        .textContent =
-        score + " / " + MAX_QUESTIONS;
+    button.className = "answer";
+    button.textContent =
+      `${String.fromCharCode(65 + index)}. ${choice}`;
+
+    button.onclick = () =>
+      selectAnswer(index, button);
+
+    answers.appendChild(button);
+  });
+
+  const source = document.getElementById("source");
+
+  if (currentQuiz.source === "ai") {
+    source.textContent = "✦ AI-generated question";
+  } else {
+    source.textContent = "⚡ Backup question";
+  }
 }
 
+function selectAnswer(index, clickedButton) {
+  if (answered) return;
 
-/*
-    RESTART
-*/
+  answered = true;
 
-function restart(){
+  const buttons =
+    document.querySelectorAll(".answer");
 
-    score = 0;
+  buttons.forEach(button => {
+    button.disabled = true;
+  });
 
-    questionNumber = 0;
+  const feedback =
+    document.getElementById("feedback");
 
-    currentQuiz = null;
+  if (index === currentQuiz.answer) {
+    clickedButton.classList.add("correct");
+    score++;
 
-    nextQuestionPromise = null;
+    feedback.classList.add("good");
+    feedback.innerHTML =
+      `<strong>Correct! 🎉</strong><br>${currentQuiz.explanation}`;
+  } else {
+    clickedButton.classList.add("wrong");
 
-    document.getElementById("score")
-        .textContent = "0";
+    buttons[currentQuiz.answer]
+      .classList.add("correct");
 
-    document.getElementById("result")
-        .style.display = "none";
+    feedback.classList.add("bad");
+    feedback.innerHTML =
+      `<strong>Not quite.</strong><br>${currentQuiz.explanation}`;
+  }
 
-    loadFirstQuestion();
+  document.getElementById("scoreText").textContent =
+    `Score: ${score}`;
+
+  document.getElementById("progressFill").style.width =
+    `${((questionNumber + 1) / MAX_QUESTIONS) * 100}%`;
+
+  document.getElementById("nextBtn").style.display =
+    "block";
 }
 
+function nextQuestion() {
+  questionNumber++;
 
-/*
-    ERROR
-*/
+  if (questionNumber >= MAX_QUESTIONS) {
+    showResult();
+    return;
+  }
 
-function showError(error){
-
-    document.getElementById("loading")
-        .style.display = "none";
-
-    document.getElementById("questionArea")
-        .style.display = "block";
-
-    document.getElementById("question")
-        .textContent =
-        "⚠️ Unable to generate question";
-
-    document.getElementById("answers")
-        .innerHTML = `
-            <div style="
-                grid-column:1/-1;
-                background:white;
-                padding:20px;
-                border-radius:15px;
-                color:#777;
-                text-align:center;
-            ">
-                ${escapeHTML(error.message)}
-            </div>
-        `;
+  loadQuestion();
 }
 
+function showResult() {
+  showScreen("resultScreen");
 
-/*
-    SECURITY
-*/
+  document.getElementById("resultScore").textContent =
+    `${score}/${MAX_QUESTIONS}`;
 
-function escapeHTML(text){
+  let message;
 
-    return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+  if (score === MAX_QUESTIONS) {
+    message = "Perfect score! 🧠🔥";
+  } else if (score >= 8) {
+    message = "Excellent work! 🎉";
+  } else if (score >= 6) {
+    message = "Good job! Keep learning! 💪";
+  } else if (score >= 4) {
+    message = "Nice try! You can do even better!";
+  } else {
+    message = "Keep practicing and try again!";
+  }
+
+  document.getElementById("resultMessage").textContent =
+    message;
 }
 
+function showError() {
+  document.getElementById("loading").innerHTML = `
+    <div style="font-size:40px">⚠️</div>
+    <p>Something went wrong.</p>
+    <button class="start-btn" onclick="loadQuestion()">
+      Try Again
+    </button>
+  `;
+}
 </script>
 
 </body>
-
 </html>
