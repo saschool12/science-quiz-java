@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Science Quiz Game</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>AI Science Quiz</title>
 
 <style>
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -15,36 +20,58 @@
 
 body {
     min-height: 100vh;
+
     font-family: Arial, sans-serif;
+
     background:
-        radial-gradient(circle at top, #12452e, #050505 60%);
+        radial-gradient(
+            circle at top,
+            #123d29,
+            #050505 60%
+        );
+
     color: white;
+
     display: flex;
-    align-items: center;
+
     justify-content: center;
+
+    align-items: center;
+
     padding: 20px;
 }
 
 .container {
     width: 100%;
     max-width: 850px;
+
     background: #101010;
+
     border: 1px solid #292929;
+
     border-radius: 22px;
+
     overflow: hidden;
-    box-shadow: 0 25px 80px rgba(0,0,0,.55);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.55);
 }
 
-.header {
+header {
     padding: 24px 28px;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     border-bottom: 1px solid #292929;
 }
 
 .logo {
     font-size: 21px;
+
     font-weight: bold;
 }
 
@@ -53,10 +80,14 @@ body {
 }
 
 .score {
-    padding: 9px 15px;
-    background: #1c1c1c;
+    background: #1b1b1b;
+
     color: #00e676;
+
+    padding: 9px 15px;
+
     border-radius: 10px;
+
     font-weight: bold;
 }
 
@@ -64,183 +95,326 @@ body {
     padding: 35px;
 }
 
-.progress-info {
+.status {
     color: #888;
+
+    margin-bottom: 20px;
+
     font-size: 14px;
-    margin-bottom: 10px;
 }
 
 .progress {
     height: 7px;
+
     background: #242424;
+
     border-radius: 20px;
+
     overflow: hidden;
+
     margin-bottom: 30px;
 }
 
-.progress-bar {
-    width: 0%;
+.bar {
     height: 100%;
+
+    width: 0%;
+
     background: #00e676;
+
     transition: .3s;
 }
 
 .question {
-    font-size: clamp(24px,5vw,36px);
+    font-size:
+        clamp(24px,5vw,36px);
+
     line-height: 1.3;
+
     margin-bottom: 28px;
 }
 
 .answers {
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+
+    grid-template-columns:
+        repeat(2,1fr);
+
     gap: 14px;
 }
 
 .answer {
-    width: 100%;
     padding: 18px;
-    text-align: left;
-    color: #ddd;
+
     background: #171717;
+
+    color: #ddd;
+
     border: 1px solid #2d2d2d;
+
     border-radius: 12px;
+
     cursor: pointer;
+
+    text-align: left;
+
     font-size: 15px;
+
     transition: .2s;
 }
 
 .answer:hover {
     border-color: #00e676;
+
     transform: translateY(-2px);
 }
 
 .answer.correct {
-    color: #00e676;
     border-color: #00e676;
-    background: rgba(0,230,118,.12);
+
+    color: #00e676;
+
+    background:
+        rgba(0,230,118,.12);
 }
 
 .answer.wrong {
-    color: #ff5252;
     border-color: #ff5252;
-    background: rgba(255,82,82,.12);
+
+    color: #ff5252;
+
+    background:
+        rgba(255,82,82,.12);
 }
 
 .answer:disabled {
     cursor: default;
 }
 
-.next {
+button.next {
     width: 100%;
-    margin-top: 24px;
+
     padding: 15px;
+
+    margin-top: 25px;
+
     border: none;
+
     border-radius: 10px;
+
     background: #00e676;
+
     color: #000;
+
     font-weight: bold;
-    font-size: 15px;
+
     cursor: pointer;
+
     display: none;
+}
+
+button.next:hover {
+    background: #00c968;
+}
+
+.generate {
+    width: 100%;
+
+    padding: 15px;
+
+    margin-bottom: 25px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #00e676;
+
+    color: #000;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.loading {
+    text-align: center;
+
+    color: #888;
+
+    padding: 40px;
+}
+
+.explanation {
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 16px;
+
+    border-radius: 10px;
+
+    background: #191919;
+
+    color: #aaa;
+
+    line-height: 1.5;
 }
 
 .result {
     display: none;
-    text-align: center;
-    padding: 55px 25px;
-}
 
-.trophy {
-    font-size: 65px;
-    margin-bottom: 18px;
+    text-align: center;
+
+    padding: 55px 25px;
 }
 
 .result h1 {
     font-size: 38px;
-    margin-bottom: 12px;
+
+    margin-bottom: 15px;
 }
 
 .final-score {
     color: #00e676;
+
     font-size: 28px;
+
     font-weight: bold;
+
     margin: 25px;
 }
 
 .restart {
     padding: 14px 28px;
+
     border: none;
+
     border-radius: 10px;
+
     background: #00e676;
+
     color: #000;
+
     font-weight: bold;
+
     cursor: pointer;
 }
 
 @media(max-width:650px) {
+
     .content {
-        padding: 24px 18px;
+        padding: 25px 18px;
     }
 
     .answers {
         grid-template-columns: 1fr;
     }
 
-    .header {
-        padding: 20px;
-    }
 }
+
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="header">
+<header>
 
 <div class="logo">
-🔬 <span>Science</span> Quiz
+🤖 <span>AI Science</span> Quiz
 </div>
 
 <div class="score" id="score">
 Score: 0
 </div>
 
+</header>
+
+
+<div class="content" id="game">
+
+<button
+class="generate"
+onclick="generateQuestion()"
+>
+✨ Generate Random Question
+</button>
+
+
+<div
+class="status"
+id="status"
+>
+Press the button to generate a question.
 </div>
 
-<div class="content" id="quiz">
-
-<div class="progress-info" id="progressInfo">
-Question 1 of 10
-</div>
 
 <div class="progress">
-<div class="progress-bar" id="progressBar"></div>
+
+<div
+class="bar"
+id="bar"
+></div>
+
 </div>
 
-<h1 class="question" id="question"></h1>
 
-<div class="answers" id="answers"></div>
+<h1
+class="question"
+id="question"
+>
+Ready?
+</h1>
 
-<button class="next" id="next" onclick="nextQuestion()">
-Next Question →
+
+<div
+class="answers"
+id="answers"
+></div>
+
+
+<div
+class="explanation"
+id="explanation"
+></div>
+
+
+<button
+class="next"
+id="next"
+onclick="generateQuestion()"
+>
+Next AI Question →
 </button>
 
 </div>
 
-<div class="result" id="result">
 
-<div class="trophy">🏆</div>
+<div
+class="result"
+id="result"
+>
 
-<h1>Quiz Complete!</h1>
+<h1>
+🏆 Quiz Complete!
+</h1>
 
-<p>Great job finishing the Science Quiz!</p>
+<p>
+You finished the AI Science Quiz.
+</p>
 
-<div class="final-score" id="finalScore"></div>
+<div
+class="final-score"
+id="finalScore"
+></div>
 
-<button class="restart" onclick="restartQuiz()">
+<button
+class="restart"
+onclick="restartQuiz()"
+>
 Play Again
 </button>
 
@@ -248,163 +422,179 @@ Play Again
 
 </div>
 
+
 <script>
 
-const questions = [
-
-{
-question: "What planet is known as the Red Planet?",
-answers: ["Earth","Mars","Jupiter","Venus"],
-correct: 1
-},
-
-{
-question: "What gas do humans need to breathe?",
-answers: ["Carbon dioxide","Nitrogen","Oxygen","Hydrogen"],
-correct: 2
-},
-
-{
-question: "What is the largest organ of the human body?",
-answers: ["Heart","Skin","Liver","Lungs"],
-correct: 1
-},
-
-{
-question: "What force pulls objects toward Earth?",
-answers: ["Magnetism","Friction","Gravity","Electricity"],
-correct: 2
-},
-
-{
-question: "What is H₂O commonly known as?",
-answers: ["Salt","Water","Oxygen","Hydrogen"],
-correct: 1
-},
-
-{
-question: "Which part of a plant performs most photosynthesis?",
-answers: ["Root","Stem","Flower","Leaf"],
-correct: 3
-},
-
-{
-question: "What is the center of an atom called?",
-answers: ["Electron","Nucleus","Proton","Molecule"],
-correct: 1
-},
-
-{
-question: "Which planet is closest to the Sun?",
-answers: ["Mercury","Earth","Mars","Saturn"],
-correct: 0
-},
-
-{
-question: "At what temperature does water freeze?",
-answers: ["0°C","50°C","100°C","-50°C"],
-correct: 0
-},
-
-{
-question: "Which organ pumps blood around the human body?",
-answers: ["Brain","Liver","Heart","Kidney"],
-correct: 2
-}
-
-];
-
-let currentQuestion = 0;
 let score = 0;
+
+let questionNumber = 0;
+
+let currentQuiz = null;
+
 let answered = false;
 
-const questionElement =
+
+const question =
 document.getElementById("question");
 
-const answersElement =
+const answers =
 document.getElementById("answers");
 
-const nextButton =
+const status =
+document.getElementById("status");
+
+const explanation =
+document.getElementById("explanation");
+
+const next =
 document.getElementById("next");
 
 const scoreElement =
 document.getElementById("score");
 
-const progressInfo =
-document.getElementById("progressInfo");
-
-const progressBar =
-document.getElementById("progressBar");
-
-const quizElement =
-document.getElementById("quiz");
-
-const resultElement =
-document.getElementById("result");
-
-const finalScoreElement =
-document.getElementById("finalScore");
+const bar =
+document.getElementById("bar");
 
 
-function showQuestion() {
+async function generateQuestion() {
 
     answered = false;
 
-    nextButton.style.display = "none";
+    answers.innerHTML = "";
 
-    const current = questions[currentQuestion];
+    explanation.style.display =
+        "none";
 
-    questionElement.textContent =
-        current.question;
+    next.style.display =
+        "none";
 
-    progressInfo.textContent =
-        `Question ${currentQuestion + 1} of ${questions.length}`;
+    question.textContent =
+        "Generating question...";
 
-    progressBar.style.width =
-        `${((currentQuestion + 1) / questions.length) * 100}%`;
+    status.textContent =
+        "🤖 Gemini is creating a random science question...";
 
-    answersElement.innerHTML = "";
 
-    current.answers.forEach((answer,index) => {
+    try {
 
-        const button =
-            document.createElement("button");
+        const response =
+            await fetch("/api/question");
 
-        button.className = "answer";
+        const data =
+            await response.json();
 
-        button.textContent =
-            `${String.fromCharCode(65 + index)}. ${answer}`;
 
-        button.onclick =
-            () => selectAnswer(index,button);
+        if (!response.ok) {
 
-        answersElement.appendChild(button);
+            throw new Error(
+                data.error ||
+                "Failed to generate question."
+            );
 
-    });
+        }
+
+
+        currentQuiz = data;
+
+        questionNumber++;
+
+
+        status.textContent =
+            `AI Question ${questionNumber}`;
+
+
+        bar.style.width =
+            `${Math.min(
+                questionNumber * 10,
+                100
+            )}%`;
+
+
+        question.textContent =
+            data.question;
+
+
+        data.choices.forEach(
+            (choice,index) => {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.className =
+                    "answer";
+
+                button.textContent =
+                    `${String.fromCharCode(
+                        65 + index
+                    )}. ${choice}`;
+
+
+                button.onclick =
+                    () =>
+                    selectAnswer(
+                        index,
+                        button
+                    );
+
+
+                answers.appendChild(
+                    button
+                );
+
+            }
+        );
+
+    } catch(error) {
+
+        question.textContent =
+            "Something went wrong.";
+
+        status.textContent =
+            error.message;
+
+    }
+
 }
 
 
-function selectAnswer(selected,selectedButton) {
+function selectAnswer(
+    selected,
+    selectedButton
+) {
 
     if (answered) return;
 
     answered = true;
 
+
     const correct =
-        questions[currentQuestion].correct;
+        currentQuiz.answer;
+
 
     const buttons =
-        document.querySelectorAll(".answer");
+        document.querySelectorAll(
+            ".answer"
+        );
 
-    buttons.forEach((button,index) => {
 
-        button.disabled = true;
+    buttons.forEach(
+        (button,index) => {
 
-        if (index === correct) {
-            button.classList.add("correct");
+            button.disabled = true;
+
+            if (index === correct) {
+
+                button.classList.add(
+                    "correct"
+                );
+
+            }
+
         }
+    );
 
-    });
 
     if (selected === correct) {
 
@@ -415,57 +605,49 @@ function selectAnswer(selected,selectedButton) {
 
     } else {
 
-        selectedButton.classList.add("wrong");
+        selectedButton.classList.add(
+            "wrong"
+        );
 
     }
 
-    nextButton.style.display = "block";
-}
+
+    explanation.textContent =
+        "💡 " +
+        currentQuiz.explanation;
 
 
-function nextQuestion() {
-
-    currentQuestion++;
-
-    if (currentQuestion >= questions.length) {
-        showResult();
-        return;
-    }
-
-    showQuestion();
-}
+    explanation.style.display =
+        "block";
 
 
-function showResult() {
-
-    quizElement.style.display = "none";
-
-    resultElement.style.display = "block";
-
-    finalScoreElement.textContent =
-        `Your Score: ${score} / ${questions.length}`;
+    next.style.display =
+        "block";
 }
 
 
 function restartQuiz() {
 
-    currentQuestion = 0;
-
     score = 0;
 
-    scoreElement.textContent = "Score: 0";
+    questionNumber = 0;
 
-    resultElement.style.display = "none";
+    scoreElement.textContent =
+        "Score: 0";
 
-    quizElement.style.display = "block";
+    document.getElementById(
+        "result"
+    ).style.display = "none";
 
-    showQuestion();
+    document.getElementById(
+        "game"
+    ).style.display = "block";
+
+    generateQuestion();
 }
-
-
-showQuestion();
 
 </script>
 
 </body>
+
 </html>
