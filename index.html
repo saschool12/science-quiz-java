@@ -2,452 +2,418 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>NeuroQuiz AI</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-:root {
-    --green: #00ff88;
-    --green2: #00c96b;
-    --bg: #050706;
-    --card: rgba(15, 20, 17, .78);
-    --border: rgba(255,255,255,.09);
-    --text: #f5f7f6;
-    --muted: #8d9691;
-    --red: #ff4d67;
-    --yellow: #ffd166;
+:root{
+    --purple:#6c3df5;
+    --purple2:#8b5cf6;
+    --green:#20c997;
+    --red:#ff5c70;
+    --yellow:#ffca3a;
+    --blue:#3d9bff;
+    --bg:#f5f6fa;
+    --dark:#252333;
+    --muted:#777584;
 }
 
-body {
-    min-height: 100vh;
-    font-family: Inter, Arial, sans-serif;
-    color: var(--text);
-    background:
-        radial-gradient(circle at 15% 15%, rgba(0,255,136,.12), transparent 30%),
-        radial-gradient(circle at 85% 80%, rgba(0,200,255,.08), transparent 30%),
-        #050706;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
+body{
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f5f6fa;
+    color:var(--dark);
 }
 
-/* animated background */
+/* TOP */
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-    background-size: 45px 45px;
-    mask-image: linear-gradient(to bottom, black, transparent);
+.top{
+    height:64px;
+    background:white;
+    border-bottom:1px solid #e7e7eb;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 22px;
+    position:sticky;
+    top:0;
+    z-index:20;
 }
 
-.orb {
-    position: fixed;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: var(--green);
-    filter: blur(140px);
-    opacity: .07;
-    animation: float 8s infinite alternate ease-in-out;
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:20px;
+    font-weight:800;
 }
 
-.orb.one {
-    top: -100px;
-    left: -100px;
+.logo-icon{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    color:white;
+    background:linear-gradient(135deg,#7041f5,#9b6cff);
+    font-size:20px;
 }
 
-.orb.two {
-    bottom: -100px;
-    right: -100px;
-    animation-delay: 2s;
+.logo span{
+    color:var(--purple);
 }
 
-@keyframes float {
-    from { transform: translate(0,0); }
-    to { transform: translate(50px,-30px); }
+.score{
+    background:#f0ebff;
+    color:var(--purple);
+    padding:9px 15px;
+    border-radius:20px;
+    font-weight:700;
 }
 
-/* app */
+/* HOME */
 
-.app {
-    width: min(900px, 94%);
-    margin: 30px auto;
-    position: relative;
-    z-index: 2;
+.home{
+    min-height:calc(100vh - 64px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px 18px;
 }
 
-/* top bar */
-
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
+.home-card{
+    width:min(680px,100%);
+    background:white;
+    border-radius:24px;
+    padding:45px 30px;
+    text-align:center;
+    box-shadow:0 12px 45px rgba(30,20,60,.08);
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.home-icon{
+    width:85px;
+    height:85px;
+    margin:0 auto 22px;
+    border-radius:22px;
+    display:grid;
+    place-items:center;
+    font-size:42px;
+    background:#eee8ff;
 }
 
-.logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 13px;
-    display: grid;
-    place-items: center;
-    font-size: 21px;
-    background: linear-gradient(135deg, #00ff88, #00b968);
-    color: #00150b;
-    box-shadow: 0 0 25px rgba(0,255,136,.22);
+.home h1{
+    font-size:38px;
+    margin-bottom:12px;
 }
 
-.brand h1 {
-    font-size: 19px;
+.home p{
+    max-width:500px;
+    margin:auto;
+    color:var(--muted);
+    font-size:16px;
+    line-height:1.6;
 }
 
-.brand p {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 2px;
+.start{
+    margin-top:30px;
+    border:0;
+    background:var(--purple);
+    color:white;
+    padding:16px 45px;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 7px 0 #4f29c7;
+    transition:.15s;
 }
 
-.scorebox {
-    padding: 10px 15px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,.045);
-    backdrop-filter: blur(15px);
-    border-radius: 13px;
+.start:hover{
+    transform:translateY(2px);
+    box-shadow:0 5px 0 #4f29c7;
 }
 
-.scorebox span {
-    color: var(--muted);
-    font-size: 11px;
+/* QUIZ */
+
+.quiz{
+    display:none;
+    min-height:calc(100vh - 64px);
+    padding:20px;
 }
 
-.scorebox strong {
-    color: var(--green);
-    margin-left: 5px;
-}
-
-/* card */
-
-.card {
-    border: 1px solid var(--border);
-    background: var(--card);
-    backdrop-filter: blur(25px);
-    border-radius: 25px;
-    padding: 32px;
-    box-shadow:
-        0 30px 90px rgba(0,0,0,.45),
-        inset 0 1px rgba(255,255,255,.04);
-}
-
-/* status */
-
-.statusrow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-}
-
-.ai-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 12px var(--green);
-}
-
-.counter {
-    font-size: 13px;
-    color: var(--muted);
+.quiz-wrap{
+    width:min(1000px,100%);
+    margin:auto;
 }
 
 /* progress */
 
-.progress {
-    height: 5px;
-    width: 100%;
-    background: rgba(255,255,255,.07);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 38px;
+.progress-area{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:20px;
 }
 
-.progressbar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--green), #7affbd);
-    box-shadow: 0 0 15px rgba(0,255,136,.45);
-    transition: width .5s ease;
+.progress{
+    flex:1;
+    height:10px;
+    background:#e1e2e8;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:var(--purple);
+    border-radius:20px;
+    transition:.4s;
+}
+
+.counter{
+    font-weight:700;
+    color:#6e6c78;
+    font-size:14px;
 }
 
 /* question */
 
-.question {
-    font-size: clamp(25px, 5vw, 39px);
-    line-height: 1.18;
-    letter-spacing: -.8px;
-    margin-bottom: 30px;
+.question-card{
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 8px 30px rgba(30,20,60,.07);
+    margin-bottom:18px;
 }
 
-.question::first-letter {
-    color: var(--green);
+.ai-label{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:var(--purple);
+    background:#f0ebff;
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.question{
+    font-size:clamp(25px,4vw,38px);
+    line-height:1.25;
 }
 
 /* answers */
 
-.answers {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 13px;
+.answers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
 }
 
-.answer {
-    position: relative;
-    min-height: 68px;
-    padding: 16px 18px;
-    border-radius: 15px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,.035);
-    color: #dce2df;
-    text-align: left;
-    cursor: pointer;
-    font-size: 15px;
-    transition: .2s ease;
+.answer{
+    min-height:100px;
+    border:0;
+    border-radius:17px;
+    color:white;
+    padding:20px;
+    text-align:left;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 5px 0 rgba(0,0,0,.15);
+    transition:.15s;
+    display:flex;
+    align-items:center;
+    gap:15px;
 }
 
-.answer:hover {
-    border-color: rgba(0,255,136,.45);
-    background: rgba(0,255,136,.06);
-    transform: translateY(-2px);
+.answer:hover{
+    transform:translateY(-2px);
 }
 
-.answer .letter {
-    display: inline-grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 9px;
-    margin-right: 10px;
-    background: rgba(255,255,255,.07);
-    color: #9da59f;
-    font-weight: bold;
+.answer:active{
+    transform:translateY(3px);
+    box-shadow:0 2px 0 rgba(0,0,0,.15);
 }
 
-.answer.correct {
-    border-color: var(--green);
-    background: rgba(0,255,136,.10);
-    color: var(--green);
-    box-shadow: 0 0 25px rgba(0,255,136,.08);
+.answer:nth-child(1){
+    background:#e94f64;
 }
 
-.answer.correct .letter {
-    background: var(--green);
-    color: #00150b;
+.answer:nth-child(2){
+    background:#3d8df5;
 }
 
-.answer.wrong {
-    border-color: var(--red);
-    background: rgba(255,77,103,.09);
-    color: #ff8396;
+.answer:nth-child(3){
+    background:#f4ae24;
 }
 
-.answer.wrong .letter {
-    background: var(--red);
-    color: white;
+.answer:nth-child(4){
+    background:#24b98b;
 }
 
-.answer:disabled {
-    cursor: default;
+.letter{
+    width:40px;
+    height:40px;
+    min-width:40px;
+    border-radius:11px;
+    background:rgba(255,255,255,.2);
+    display:grid;
+    place-items:center;
+    font-size:16px;
+}
+
+.answer.correct{
+    outline:5px solid rgba(32,201,151,.25);
+    transform:scale(1.015);
+}
+
+.answer.wrong{
+    opacity:.55;
+}
+
+.answer:disabled{
+    cursor:default;
 }
 
 /* explanation */
 
-.explanation {
-    margin-top: 20px;
-    padding: 17px;
-    border-radius: 14px;
-    background: rgba(255,255,255,.035);
-    border: 1px solid var(--border);
-    color: #adb6b1;
-    line-height: 1.55;
-    display: none;
+.explanation{
+    display:none;
+    margin-top:18px;
+    background:white;
+    padding:18px 20px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.06);
+    line-height:1.5;
 }
 
-.explanation b {
-    color: var(--green);
+.explanation strong{
+    color:var(--purple);
 }
 
-/* buttons */
+/* next */
 
-.buttons {
-    display: flex;
-    gap: 12px;
-    margin-top: 22px;
-}
-
-button {
-    font-family: inherit;
-}
-
-.generate,
-.next {
-    flex: 1;
-    padding: 15px;
-    border: 0;
-    border-radius: 13px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.generate {
-    background: linear-gradient(135deg, var(--green), var(--green2));
-    color: #00150b;
-    box-shadow: 0 8px 25px rgba(0,255,136,.12);
-}
-
-.generate:hover,
-.next:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0,255,136,.2);
-}
-
-.next {
-    display: none;
-    background: #eafff4;
-    color: #00150b;
+.next{
+    display:none;
+    width:100%;
+    margin-top:18px;
+    padding:16px;
+    border:0;
+    border-radius:13px;
+    background:var(--purple);
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
 }
 
 /* loading */
 
-.loading {
-    display: none;
-    padding: 50px 20px;
-    text-align: center;
+.loading{
+    display:none;
+    text-align:center;
+    padding:100px 20px;
 }
 
-.spinner {
-    width: 42px;
-    height: 42px;
-    border: 3px solid rgba(255,255,255,.1);
-    border-top-color: var(--green);
-    border-radius: 50%;
-    animation: spin .8s linear infinite;
-    margin: 0 auto 18px;
+.loader{
+    width:48px;
+    height:48px;
+    border:5px solid #ddd;
+    border-top-color:var(--purple);
+    border-radius:50%;
+    animation:spin .7s linear infinite;
+    margin:auto auto 18px;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* welcome */
-
-.welcome {
-    text-align: center;
-    padding: 35px 10px 10px;
-}
-
-.welcome-icon {
-    font-size: 55px;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 0 18px rgba(0,255,136,.25));
-}
-
-.welcome h2 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-.welcome p {
-    color: var(--muted);
-    max-width: 520px;
-    margin: auto;
-    line-height: 1.6;
+@keyframes spin{
+    to{transform:rotate(360deg)}
 }
 
 /* result */
 
-.result {
-    display: none;
-    text-align: center;
-    padding: 50px 20px;
+.result{
+    display:none;
+    text-align:center;
+    background:white;
+    border-radius:22px;
+    padding:60px 25px;
+    box-shadow:0 10px 40px rgba(0,0,0,.07);
 }
 
-.trophy {
-    font-size: 70px;
-    margin-bottom: 15px;
+.result-icon{
+    font-size:65px;
+    margin-bottom:15px;
 }
 
-.result h2 {
-    font-size: 34px;
+.result h1{
+    font-size:34px;
 }
 
-.finalscore {
-    color: var(--green);
-    font-size: 35px;
-    font-weight: bold;
-    margin: 18px;
+.final-score{
+    font-size:38px;
+    font-weight:800;
+    color:var(--purple);
+    margin:18px;
 }
 
-.restart {
-    padding: 14px 28px;
-    border: 0;
-    border-radius: 12px;
-    background: var(--green);
-    color: #00150b;
-    font-weight: bold;
-    cursor: pointer;
+.restart{
+    border:0;
+    background:var(--purple);
+    color:white;
+    padding:14px 30px;
+    border-radius:12px;
+    font-weight:700;
+    cursor:pointer;
 }
 
 /* mobile */
 
-@media(max-width:650px) {
+@media(max-width:650px){
 
-    .card {
-        padding: 22px;
-        border-radius: 20px;
+    .top{
+        padding:0 14px;
     }
 
-    .answers {
-        grid-template-columns: 1fr;
+    .logo{
+        font-size:17px;
     }
 
-    .question {
-        font-size: 27px;
+    .quiz{
+        padding:13px;
     }
 
-    .buttons {
-        flex-direction: column;
+    .question-card{
+        padding:25px 18px;
     }
 
-    .topbar {
-        margin-bottom: 13px;
+    .answers{
+        grid-template-columns:1fr;
+        gap:12px;
+    }
+
+    .answer{
+        min-height:75px;
+        font-size:15px;
+    }
+
+    .home-card{
+        padding:35px 20px;
+    }
+
+    .home h1{
+        font-size:29px;
     }
 }
 </style>
@@ -455,151 +421,158 @@ button {
 
 <body>
 
-<div class="orb one"></div>
-<div class="orb two"></div>
+<header class="top">
 
-<main class="app">
+    <div class="logo">
+        <div class="logo-icon">✦</div>
+        Neuro<span>Quiz</span> AI
+    </div>
 
-    <div class="topbar">
+    <div class="score">
+        🏆 <span id="score">0</span>
+    </div>
 
-        <div class="brand">
+</header>
 
-            <div class="logo">✦</div>
 
-            <div>
-                <h1>NeuroQuiz AI</h1>
-                <p>Powered by Gemini</p>
-            </div>
+<!-- HOME -->
 
+<section id="home" class="home">
+
+    <div class="home-card">
+
+        <div class="home-icon">
+            🧠
         </div>
 
-        <div class="scorebox">
-            <span>SCORE</span>
-            <strong id="score">0</strong>
+        <h1>
+            Science Challenge
+        </h1>
+
+        <p>
+            Test your knowledge with
+            AI-generated questions covering
+            biology, chemistry, physics,
+            astronomy and more.
+        </p>
+
+        <button
+            class="start"
+            onclick="startQuiz()">
+            Start Quiz →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- QUIZ -->
+
+<section id="quiz" class="quiz">
+
+<div class="quiz-wrap">
+
+    <div class="progress-area">
+
+        <div class="progress">
+            <div
+                id="progress"
+                class="progress-bar">
+            </div>
+        </div>
+
+        <div class="counter">
+            <span id="number">0</span>
+            / 10
         </div>
 
     </div>
 
 
-    <section class="card">
+    <div id="questionArea">
 
-        <div id="welcome" class="welcome">
+        <div class="question-card">
 
-            <div class="welcome-icon">🧠</div>
-
-            <h2>Test Your Science Knowledge</h2>
-
-            <p>
-                Gemini AI generates a fresh science
-                question every time. Physics, biology,
-                chemistry, astronomy and more.
-            </p>
-
-        </div>
-
-
-        <div id="quiz" style="display:none;">
-
-            <div class="statusrow">
-
-                <div class="ai-status">
-                    <span class="dot"></span>
-                    <span id="status">AI Ready</span>
-                </div>
-
-                <div class="counter">
-                    Question <span id="number">0</span>
-                </div>
-
+            <div class="ai-label">
+                ✨ AI GENERATED
             </div>
 
-
-            <div class="progress">
-                <div
-                    id="progressbar"
-                    class="progressbar">
-                </div>
-            </div>
-
-
-            <h2
+            <h1
                 id="question"
                 class="question">
-            </h2>
-
-
-            <div
-                id="answers"
-                class="answers">
-            </div>
-
-
-            <div
-                id="explanation"
-                class="explanation">
-            </div>
-
-
-            <div class="buttons">
-
-                <button
-                    id="generate"
-                    class="generate"
-                    onclick="generateQuestion()">
-                    ✨ Generate AI Question
-                </button>
-
-                <button
-                    id="next"
-                    class="next"
-                    onclick="generateQuestion()">
-                    Next Question →
-                </button>
-
-            </div>
+            </h1>
 
         </div>
 
 
         <div
-            id="loading"
-            class="loading">
-
-            <div class="spinner"></div>
-
-            <p>Gemini is thinking...</p>
-
+            id="answers"
+            class="answers">
         </div>
 
 
         <div
-            id="result"
-            class="result">
-
-            <div class="trophy">🏆</div>
-
-            <h2>Quiz Complete!</h2>
-
-            <p>
-                Nice work. Here's your final score:
-            </p>
-
-            <div
-                id="finalscore"
-                class="finalscore">
-            </div>
-
-            <button
-                class="restart"
-                onclick="restart()">
-                Play Again
-            </button>
-
+            id="explanation"
+            class="explanation">
         </div>
 
-    </section>
 
-</main>
+        <button
+            id="next"
+            class="next"
+            onclick="nextQuestion()">
+            Next Question →
+        </button>
+
+    </div>
+
+
+    <div
+        id="loading"
+        class="loading">
+
+        <div class="loader"></div>
+
+        <h3>
+            AI is creating your question...
+        </h3>
+
+    </div>
+
+
+    <div
+        id="result"
+        class="result">
+
+        <div class="result-icon">
+            🏆
+        </div>
+
+        <h1>
+            Quiz Complete!
+        </h1>
+
+        <p>
+            Here's your final score
+        </p>
+
+        <div
+            id="finalScore"
+            class="final-score">
+        </div>
+
+        <button
+            class="restart"
+            onclick="restart()">
+            Play Again
+        </button>
+
+    </div>
+
+</div>
+
+</section>
 
 
 <script>
@@ -609,63 +582,43 @@ let questionNumber = 0;
 let currentQuiz = null;
 let answered = false;
 
-
-const welcome =
-document.getElementById("welcome");
-
-const quiz =
-document.getElementById("quiz");
-
-const loading =
-document.getElementById("loading");
-
-const result =
-document.getElementById("result");
-
-const question =
-document.getElementById("question");
-
-const answers =
-document.getElementById("answers");
-
-const explanation =
-document.getElementById("explanation");
-
-const status =
-document.getElementById("status");
-
-const number =
-document.getElementById("number");
-
-const scoreEl =
-document.getElementById("score");
-
-const progress =
-document.getElementById("progressbar");
-
-const generate =
-document.getElementById("generate");
-
-const next =
-document.getElementById("next");
+const MAX_QUESTIONS = 10;
 
 
-async function generateQuestion() {
+function startQuiz(){
+
+    document.getElementById("home")
+        .style.display = "none";
+
+    document.getElementById("quiz")
+        .style.display = "block";
+
+    generateQuestion();
+}
+
+
+async function generateQuestion(){
+
+    if(questionNumber >= MAX_QUESTIONS){
+        showResult();
+        return;
+    }
 
     answered = false;
 
-    welcome.style.display = "none";
-    quiz.style.display = "none";
-    result.style.display = "none";
-    loading.style.display = "block";
+    document.getElementById("questionArea")
+        .style.display = "none";
 
-    answers.innerHTML = "";
+    document.getElementById("loading")
+        .style.display = "block";
 
-    explanation.style.display = "none";
+    document.getElementById("next")
+        .style.display = "none";
 
-    next.style.display = "none";
+    document.getElementById("explanation")
+        .style.display = "none";
 
-    try {
+    try{
 
         const response =
             await fetch("/api/question");
@@ -673,10 +626,10 @@ async function generateQuestion() {
         const data =
             await response.json();
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error(
                 data.error ||
-                "Gemini request failed."
+                "Unable to generate question."
             );
         }
 
@@ -684,74 +637,83 @@ async function generateQuestion() {
 
         questionNumber++;
 
-        question.textContent =
-            data.question;
+        document.getElementById("number")
+            .textContent = questionNumber;
 
-        number.textContent =
-            questionNumber;
+        document.getElementById("score")
+            .textContent = score;
 
-        status.textContent =
-            "Gemini generated a question";
+        document.getElementById("progress")
+            .style.width =
+            ((questionNumber - 1) /
+            MAX_QUESTIONS * 100) + "%";
 
-        progress.style.width =
-            Math.min(
-                questionNumber * 10,
-                100
-            ) + "%";
+        document.getElementById("question")
+            .textContent = data.question;
 
+        const answers =
+            document.getElementById("answers");
+
+        answers.innerHTML = "";
 
         data.choices.forEach(
-            (choice, index) => {
+            (choice,index)=>{
 
                 const button =
                     document.createElement("button");
 
-                button.className =
-                    "answer";
+                button.className = "answer";
 
                 button.innerHTML = `
                     <span class="letter">
-                        ${String.fromCharCode(65 + index)}
+                        ${String.fromCharCode(65+index)}
                     </span>
                     ${escapeHTML(choice)}
                 `;
 
                 button.onclick = () =>
-                    selectAnswer(
-                        index,
-                        button
-                    );
+                    selectAnswer(index,button);
 
                 answers.appendChild(button);
-
             }
         );
 
+        document.getElementById("loading")
+            .style.display = "none";
 
-        loading.style.display = "none";
-        quiz.style.display = "block";
+        document.getElementById("questionArea")
+            .style.display = "block";
 
-    } catch(error) {
+    }catch(error){
 
-        loading.style.display = "none";
-        quiz.style.display = "block";
+        document.getElementById("loading")
+            .style.display = "none";
 
-        question.textContent =
-            "⚠️ Unable to generate question";
+        document.getElementById("questionArea")
+            .style.display = "block";
 
-        status.textContent =
-            error.message;
+        document.getElementById("question")
+            .textContent = "⚠️ Error";
 
+        document.getElementById("answers")
+            .innerHTML = `
+                <div style="
+                    grid-column:1/-1;
+                    background:white;
+                    padding:20px;
+                    border-radius:15px;
+                    color:#777;
+                    text-align:center;">
+                    ${escapeHTML(error.message)}
+                </div>
+            `;
     }
 }
 
 
-function selectAnswer(
-    selected,
-    selectedButton
-) {
+function selectAnswer(selected,button){
 
-    if (answered) return;
+    if(answered) return;
 
     answered = true;
 
@@ -761,75 +723,104 @@ function selectAnswer(
     const buttons =
         document.querySelectorAll(".answer");
 
-
     buttons.forEach(
-        (button, index) => {
+        (btn,index)=>{
 
-            button.disabled = true;
+            btn.disabled = true;
 
-            if (index === correct) {
-                button.classList.add("correct");
+            if(index === correct){
+                btn.classList.add("correct");
             }
-
         }
     );
 
-
-    if (selected === correct) {
+    if(selected === correct){
 
         score++;
 
-        scoreEl.textContent = score;
+        button.classList.add("correct");
 
-        selectedButton.classList.add("correct");
+    }else{
 
-        status.textContent =
-            "✓ Correct! Great job.";
-
-    } else {
-
-        selectedButton.classList.add("wrong");
-
-        status.textContent =
-            "✕ Not quite. Keep learning.";
+        button.classList.add("wrong");
 
     }
 
+    document.getElementById("score")
+        .textContent = score;
 
-    explanation.innerHTML = `
-        <b>💡 Explanation</b><br>
-        ${escapeHTML(currentQuiz.explanation)}
-    `;
+    document.getElementById("explanation")
+        .innerHTML = `
+            <strong>💡 Explanation</strong><br>
+            ${escapeHTML(currentQuiz.explanation)}
+        `;
 
-    explanation.style.display = "block";
+    document.getElementById("explanation")
+        .style.display = "block";
 
-    generate.style.display = "none";
-    next.style.display = "block";
+    document.getElementById("next")
+        .style.display = "block";
 }
 
 
-function restart() {
+function nextQuestion(){
+
+    document.getElementById("progress")
+        .style.width =
+        (questionNumber / MAX_QUESTIONS * 100) + "%";
+
+    if(questionNumber >= MAX_QUESTIONS){
+
+        showResult();
+
+    }else{
+
+        generateQuestion();
+
+    }
+}
+
+
+function showResult(){
+
+    document.getElementById("questionArea")
+        .style.display = "none";
+
+    document.getElementById("loading")
+        .style.display = "none";
+
+    document.getElementById("result")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .textContent =
+        score + " / " + MAX_QUESTIONS;
+}
+
+
+function restart(){
 
     score = 0;
     questionNumber = 0;
 
-    scoreEl.textContent = "0";
+    document.getElementById("score")
+        .textContent = "0";
 
-    result.style.display = "none";
+    document.getElementById("result")
+        .style.display = "none";
 
     generateQuestion();
 }
 
 
-function escapeHTML(text) {
+function escapeHTML(text){
 
     return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 }
 
 </script>
